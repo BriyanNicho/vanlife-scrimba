@@ -1,10 +1,11 @@
 import React from "react"
 import { Link } from "react-router-dom"
+import homeHeroImg from "../assets/images/home-hero.png"
 
 export default function Home() {
     return (
         <div className="relative h-[calc(100vh-184px)] flex flex-col justify-center items-center text-center px-8 bg-cover bg-center text-white"
-            style={{ backgroundImage: "url('/assets/images/home-hero.png')" }}
+            style={{ backgroundImage: `url(${homeHeroImg})` }}
         >
             { }
             <div className="relative z-10 max-w-lg">
