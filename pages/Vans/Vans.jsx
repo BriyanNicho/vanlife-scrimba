@@ -31,78 +31,107 @@ export default function Vans() {
         : vans
 
     const vanElements = displayedVans.map(van => (
-        <div key={van.id} className="van-tile">
+        <div key={van.id} className="group flex flex-col">
             <Link
                 to={van.id}
                 state={{
                     search: `?${searchParams.toString()}`,
                     type: typeFilter
                 }}
+                className="flex flex-col h-full transform transition-all duration-300 hover:-translate-y-2 cursor-pointer"
             >
-                <img src={van.imageUrl} />
-                <div className="van-info">
-                    <h3>{van.name}</h3>
-                    <p>${van.price}<span>/day</span></p>
+                <div className="overflow-hidden rounded-xl aspect-square shadow-sm group-hover:shadow-xl transition-shadow duration-300">
+                    <img
+                        src={van.imageUrl}
+                        alt={van.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
+                    />
                 </div>
-                <i className={`van-type ${van.type} selected`}>{van.type}</i>
+                <div className="flex justify-between items-start mt-3 mb-1 text-[#161616]">
+                    <h3 className="text-xl font-bold group-hover:text-van-orange transition-colors duration-200">
+                        {van.name}
+                    </h3>
+                    <p className="text-xl font-semibold text-right leading-tight">
+                        ${van.price}
+                        <span className="block text-sm font-normal text-gray-500">/day</span>
+                    </p>
+                </div>
+                <span className={`inline-block self-start px-5 py-1.5 rounded-md text-sm font-semibold capitalize mt-auto transition-all duration-200 ${van.type === "simple" ? "bg-[#E17654] text-white" :
+                    van.type === "luxury" ? "bg-[#161616] text-white" :
+                        van.type === "rugged" ? "bg-[#115E59] text-white" : "bg-[#FFEAD0] text-gray-700"
+                    }`}>
+                    {van.type}
+                </span>
             </Link>
         </div>
     ))
 
     function handleFilterChange(key, value) {
         setSearchParams(prevParams => {
+            const newParams = new URLSearchParams(prevParams)
             if (value === null) {
-                prevParams.delete(key)
+                newParams.delete(key)
             } else {
-                prevParams.set(key, value)
+                newParams.set(key, value)
             }
-            return prevParams
+            return newParams
         })
     }
 
     if (loading) {
         return <h1>Loading...</h1>
     }
-    
+
     if (error) {
         return <h1>There was an error: {error.message}</h1>
     }
 
     return (
-        <div className="van-list-container">
-            <h1>Explore our van options</h1>
-            <div className="van-list-filter-buttons">
+        <div className="px-6 py-10 max-w-5xl mx-auto">
+            <h1 className="text-3xl font-extrabold mb-6 text-van-dark">
+                Explore our van options
+            </h1>
+
+            <div className="sticky top-[110px] z-40 bg-van-bg py-4 mb-6 flex flex-wrap items-center gap-4">
                 <button
                     onClick={() => handleFilterChange("type", "simple")}
-                    className={
-                        `van-type simple 
-                        ${typeFilter === "simple" ? "selected" : ""}`
-                    }
-                >Simple</button>
+                    className={`px-4 py-1.5 font-medium rounded-md transition-colors ${typeFilter === "simple"
+                        ? "bg-[#E17654] text-white"
+                        : "bg-[#FFEAD0] text-gray-700 hover:bg-[#E17654] hover:text-white"
+                        }`}
+                >
+                    Simple
+                </button>
                 <button
                     onClick={() => handleFilterChange("type", "luxury")}
-                    className={
-                        `van-type luxury 
-                        ${typeFilter === "luxury" ? "selected" : ""}`
-                    }
-                >Luxury</button>
+                    className={`px-4 py-1.5 font-medium rounded-md transition-colors ${typeFilter === "luxury"
+                        ? "bg-[#161616] text-white"
+                        : "bg-[#FFEAD0] text-gray-700 hover:bg-[#161616] hover:text-white"
+                        }`}
+                >
+                    Luxury
+                </button>
                 <button
                     onClick={() => handleFilterChange("type", "rugged")}
-                    className={
-                        `van-type rugged 
-                        ${typeFilter === "rugged" ? "selected" : ""}`
-                    }
-                >Rugged</button>
+                    className={`px-4 py-1.5 font-medium rounded-md transition-colors ${typeFilter === "rugged"
+                        ? "bg-[#115E59] text-white"
+                        : "bg-[#FFEAD0] text-gray-700 hover:bg-[#115E59] hover:text-white"
+                        }`}
+                >
+                    Rugged
+                </button>
 
                 {typeFilter ? (
                     <button
                         onClick={() => handleFilterChange("type", null)}
-                        className="van-type clear-filters"
-                    >Clear filter</button>
+                        className="px-4 py-1.5 text-gray-500 underline hover:text-van-dark transition-colors"
+                    >
+                        Clear filters
+                    </button>
                 ) : null}
-
             </div>
-            <div className="van-list">
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {vanElements}
             </div>
         </div>

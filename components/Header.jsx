@@ -14,9 +14,9 @@ export default function Header() {
     }
 
     return (
-        <header>
-            <Link className="site-logo" to="/">#VanLife</Link>
-            <nav>
+        <header className="sticky top-0 z-50 flex justify-between items-center h-[110px] px-6 bg-van-bg shadow-sm">
+            <Link className="text-black text-3xl font-black uppercase tracking-tighter" to="/">#VanLife</Link>
+            <nav className="flex items-center gap-6 font-semibold text-gray-600">
                 <NavLink
                     to="/host"
                     style={({ isActive }) => isActive ? activeStyles : null}
@@ -35,10 +35,10 @@ export default function Header() {
                 >
                     Vans
                 </NavLink>
-                <Link to="login" className="login-link">
+                <Link to="login" className="ml-2">
                     <img
                         src={imageUrl}
-                        className="login-icon"
+                        className="w-6 h-6"
                     />
                 </Link>
                 <button onClick={fakeLogOut}>X</button>
