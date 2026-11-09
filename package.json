@@ -2,13 +2,14 @@
   "name": "Scrim-s04sk6m",
   "description": "https://scrimba.com/frontend-path-c0j/~014e",
   "scripts": {
-    "start": "vite",
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.118.0",
+    "next": "^14.2.35",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "4.7.1",

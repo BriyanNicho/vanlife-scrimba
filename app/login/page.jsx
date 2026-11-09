@@ -1,16 +1,19 @@
-import React from "react"
-import { useLocation, useNavigate } from "react-router-dom"
-import { loginUser } from "../api"
+"use client"
 
-export default function Login() {
+import React, { Suspense } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { loginUser } from "../../api"
+
+function LoginForm() {
     const [loginFormData, setLoginFormData] = React.useState({ email: "", password: "" })
     const [status, setStatus] = React.useState("idle")
     const [error, setError] = React.useState(null)
 
-    const location = useLocation()
-    const navigate = useNavigate()
+    const router = useRouter()
+    const searchParams = useSearchParams()
 
-    const from = location.state?.from || "/host";
+    const message = searchParams.get("message")
+    const from = searchParams.get("from") || "/host"
 
     function handleSubmit(e) {
         e.preventDefault()
@@ -18,8 +21,10 @@ export default function Login() {
         loginUser(loginFormData)
             .then(data => {
                 setError(null)
-                localStorage.setItem("loggedin", true)
-                navigate(from, { replace: true })
+                if (typeof window !== "undefined") {
+                    localStorage.setItem("loggedin", "true")
+                }
+                router.replace(from)
             })
             .catch(err => {
                 setError(err)
@@ -39,17 +44,15 @@ export default function Login() {
 
     return (
         <div className="flex flex-col items-center px-6 py-12 max-w-md mx-auto">
-            {
-                location.state?.message &&
-                <h3 className="text-red-500 font-semibold mb-4 text-center">{location.state.message}</h3>
-            }
+            {message && (
+                <h3 className="text-red-500 font-semibold mb-4 text-center">{message}</h3>
+            )}
             <h1 className="text-3xl font-extrabold text-center text-van-dark mb-8">
                 Sign in to your account
             </h1>
-            {
-                error?.message &&
+            {error?.message && (
                 <h3 className="text-red-500 font-semibold mb-4 text-center">{error.message}</h3>
-            }
+            )}
 
             <form onSubmit={handleSubmit} className="flex flex-col w-full gap-3">
                 <input
@@ -80,5 +83,13 @@ export default function Login() {
             </form>
         </div>
     )
-
 }
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={<div className="text-center py-20 font-bold">Loading...</div>}>
+            <LoginForm />
+        </Suspense>
+    )
+}
+

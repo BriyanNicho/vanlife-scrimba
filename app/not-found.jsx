@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import Link from "next/link"
 
 export default function NotFound() {
     return (
@@ -8,7 +8,7 @@ export default function NotFound() {
                 Sorry, the page you were looking for was not found.
             </h1>
             <Link
-                to="/"
+                href="/"
                 className="block w-full bg-van-dark text-white font-bold py-4 rounded-md hover:bg-gray-800 transition-colors text-center cursor-pointer"
             >
                 Return to Home
@@ -16,3 +16,4 @@ export default function NotFound() {
         </div>
     )
 }
+
